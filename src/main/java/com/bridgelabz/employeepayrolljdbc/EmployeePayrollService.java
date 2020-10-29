@@ -41,4 +41,27 @@ public class EmployeePayrollService {
 		return employeePayrollList;
 	}
 
+	public int updateData(String name, Double salary) {
+		String sqlQuery = String.format("UPDATE employee_payroll SET salary = %.2f WHERE NAME = '%s';", salary, name);
+		try (Connection connection = DBConnection.getConnection()) {
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sqlQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public boolean check(List<EmployeePayroll> employeePayrollList, String name, double salary) {
+		EmployeePayroll employeeObj = getEmployee(employeePayrollList, name);
+		employeeObj.setSalary(salary);
+		return employeeObj.equals(getEmployee(readData(), name));
+	}
+
+	private EmployeePayroll getEmployee(List<EmployeePayroll> employeeList, String name) {
+		EmployeePayroll employee = employeeList.stream().filter(employeeObj -> ((employeeObj.getName()).equals(name)))
+				.findFirst().orElse(null);
+		return employee;
+	}
+
 }

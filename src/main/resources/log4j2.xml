@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+<Properties>
+<Property name="basePath">logs</Property>
+</Properties>
+<Appenders>
+<!-- File Appender -->
+<File name="FILE" fileName="${basePath}/logFile.log" append="false">
+<PatternLayout pattern="%m%n" />
+</File>
+</Appenders>
+<Loggers>
+<Logger name="com.jcg" level="info" />
+<Root level="info">
+<AppenderRef ref="FILE" />
+</Root>
+</Loggers>
+</Configuration>

@@ -1,6 +1,7 @@
 package com.bridgelabz.employeepayrolljdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,10 @@ import org.apache.logging.log4j.Logger;
 public class EmployeePayrollService {
 
 	public static final Logger LOG = LogManager.getLogger(EmployeePayrollService.class);
+
+	public enum statementType {
+		STATEMENT, PREPARED_STATEMENT
+	}
 
 	public static void main(String[] args) {
 		// Welcome Message
@@ -41,7 +46,16 @@ public class EmployeePayrollService {
 		return employeePayrollList;
 	}
 
-	public int updateData(String name, Double salary) {
+	// To update data in the database
+	public int updateData(String name, double salary, statementType type) {
+		if (type.equals(statementType.STATEMENT))
+			return updateUsingStatement(name, salary);
+		if (type.equals(statementType.PREPARED_STATEMENT))
+			return updateUsingPreparedStatement(name, salary);
+		return 0;
+	}
+
+	private int updateUsingStatement(String name, double salary) {
 		String sqlQuery = String.format("UPDATE employee_payroll SET salary = %.2f WHERE NAME = '%s';", salary, name);
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
@@ -52,6 +66,20 @@ public class EmployeePayrollService {
 		return 0;
 	}
 
+	private int updateUsingPreparedStatement(String name, double salary) {
+		String sql = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+		try (Connection connection = DBConnection.getConnection()) {
+			PreparedStatement preparedStatementUpdate = connection.prepareStatement(sql);
+			preparedStatementUpdate.setDouble(1, salary);
+			preparedStatementUpdate.setString(2, name);
+			return preparedStatementUpdate.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	// To check the database after updating
 	public boolean check(List<EmployeePayroll> employeePayrollList, String name, double salary) {
 		EmployeePayroll employeeObj = getEmployee(employeePayrollList, name);
 		employeeObj.setSalary(salary);

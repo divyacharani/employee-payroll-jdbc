@@ -6,10 +6,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
+import com.bridgelabz.employeepayrolljdbc.DatabaseException.exceptionType;
+
 public class DBConnection {
 
 	// To load drivers and establish connection
-	public static Connection getConnection() {
+	public static Connection getConnection() throws DatabaseException {
 		Connection connection = null;
 		String jdbcDriver = "com.mysql.jdbc.Driver";
 		String dataBaseURL = "jdbc:mysql://localhost:3306/payroll_service";
@@ -19,7 +21,7 @@ public class DBConnection {
 			Class.forName(jdbcDriver);
 			EmployeePayrollService.LOG.info("Driver Loaded!!!");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new DatabaseException("Unable to load the driver!!", exceptionType.DRIVER_CONNECTION);
 		}
 
 		// Get list of drivers
@@ -32,7 +34,7 @@ public class DBConnection {
 			connection = DriverManager.getConnection(dataBaseURL, "root", "Charani@19");
 			EmployeePayrollService.LOG.info("Connection established successfully!!!");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DatabaseException("Unable to connect to database!!", exceptionType.DATABASE_CONNECTION);
 		}
 		return connection;
 	}

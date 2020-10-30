@@ -12,9 +12,24 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.bridgelabz.employeepayrolljdbc.DatabaseException.exceptionType;
+
 public class EmployeePayrollService {
 
 	public static final Logger LOG = LogManager.getLogger(EmployeePayrollService.class);
+	private static EmployeePayrollService employeePayrollService;
+	PreparedStatement preparedStatement;
+
+	private EmployeePayrollService() {
+
+	}
+
+	// To get instance for EmployeePayrollService
+	public static EmployeePayrollService getInstance() {
+		if (employeePayrollService == null)
+			employeePayrollService = new EmployeePayrollService();
+		return employeePayrollService;
+	}
 
 	public enum statementType {
 		STATEMENT, PREPARED_STATEMENT
@@ -27,12 +42,38 @@ public class EmployeePayrollService {
 	}
 
 	// To read payroll Data from database
-	public List<EmployeePayroll> readData() {
+	public List<EmployeePayroll> readData() throws DatabaseException {
 		String sqlQuery = "SELECT * FROM employee_payroll";
-		List<EmployeePayroll> employeePayrollList = new ArrayList<>();
+		List<EmployeePayroll> employeePayrollList = null;
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sqlQuery);
+			employeePayrollList = getResultSet(result);
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return employeePayrollList;
+	}
+
+	// To get employee data by employee name
+	public List<EmployeePayroll> getEmployeeDataByName(String name) throws DatabaseException {
+		List<EmployeePayroll> employeePayrollListByName = null;
+		if (preparedStatement == null)
+			preparedStatemenToGetEmployeeDataByName();
+		ResultSet result = null;
+		try {
+			preparedStatement.setString(1, name);
+			result = preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		employeePayrollListByName = getResultSet(result);
+		return employeePayrollListByName;
+	}
+
+	private List<EmployeePayroll> getResultSet(ResultSet result) throws DatabaseException {
+		List<EmployeePayroll> employeePayrollList = new ArrayList<>();
+		try {
 			while (result.next()) {
 				int id = result.getInt("id");
 				String name = result.getString("name");
@@ -41,13 +82,13 @@ public class EmployeePayrollService {
 				employeePayrollList.add(new EmployeePayroll(id, name, salary, startDate));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
 		return employeePayrollList;
 	}
 
 	// To update data in the database
-	public int updateData(String name, double salary, statementType type) {
+	public int updateData(String name, double salary, statementType type) throws DatabaseException {
 		if (type.equals(statementType.STATEMENT))
 			return updateUsingStatement(name, salary);
 		if (type.equals(statementType.PREPARED_STATEMENT))
@@ -55,18 +96,17 @@ public class EmployeePayrollService {
 		return 0;
 	}
 
-	private int updateUsingStatement(String name, double salary) {
+	private int updateUsingStatement(String name, double salary) throws DatabaseException {
 		String sqlQuery = String.format("UPDATE employee_payroll SET salary = %.2f WHERE NAME = '%s';", salary, name);
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
 			return statement.executeUpdate(sqlQuery);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
-		return 0;
 	}
 
-	private int updateUsingPreparedStatement(String name, double salary) {
+	private int updateUsingPreparedStatement(String name, double salary) throws DatabaseException {
 		String sql = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
 		try (Connection connection = DBConnection.getConnection()) {
 			PreparedStatement preparedStatementUpdate = connection.prepareStatement(sql);
@@ -74,13 +114,13 @@ public class EmployeePayrollService {
 			preparedStatementUpdate.setString(2, name);
 			return preparedStatementUpdate.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
-		return 0;
 	}
 
 	// To check the database after updating
-	public boolean check(List<EmployeePayroll> employeePayrollList, String name, double salary) {
+	public boolean check(List<EmployeePayroll> employeePayrollList, String name, double salary)
+			throws DatabaseException {
 		EmployeePayroll employeeObj = getEmployee(employeePayrollList, name);
 		employeeObj.setSalary(salary);
 		return employeeObj.equals(getEmployee(readData(), name));
@@ -92,4 +132,13 @@ public class EmployeePayrollService {
 		return employee;
 	}
 
+	// Prepared statement for employee payroll data
+	private void preparedStatemenToGetEmployeeDataByName() throws DatabaseException {
+		String sql = "SELECT * FROM employee_payroll WHERE name = ?";
+		try (Connection connection = DBConnection.getConnection()) {
+			preparedStatement = connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+	}
 }

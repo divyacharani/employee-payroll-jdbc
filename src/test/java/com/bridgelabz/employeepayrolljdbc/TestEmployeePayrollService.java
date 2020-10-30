@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bridgelabz.employeepayrolljdbc.EmployeePayrollService.statementType;
+
 public class TestEmployeePayrollService {
 
 	private EmployeePayrollService employeePayrollService;
@@ -14,30 +16,31 @@ public class TestEmployeePayrollService {
 
 	@Before
 	public void init() {
-		employeePayrollService = new EmployeePayrollService();
+		employeePayrollService = EmployeePayrollService.getInstance();
 	}
 
 	// To test the retrieved entries from database
 	@Test
-	public void givenEmployeePayrollInDBWhenRetrievedShouldMatchEmployeeCount() {
+	public void givenEmployeePayrollInDBWhenRetrievedShouldMatchEmployeeCount() throws DatabaseException {
 		employeeList = employeePayrollService.readData();
 		assertEquals(3, employeeList.size());
 	}
 
 	// To test whether database is updated for a given entry or not using statement
 	@Test
-	public void givenUpdatedSalaryWhenUpdatedShouldSyncWithDatabase() {
+	public void givenUpdatedSalaryWhenUpdatedShouldSyncWithDatabase() throws DatabaseException {
 		employeeList = employeePayrollService.readData();
-		employeePayrollService.updateData("Terisa", 3000000.00, EmployeePayrollService.statementType.STATEMENT);
+		employeePayrollService.updateData("Terisa", 3000000.00, statementType.STATEMENT);
 		boolean result = employeePayrollService.check(employeeList, "Terisa", 3000000.00);
 		assertTrue(result);
 	}
 
-	// To test whether database is updated for a given entry or not using prepared statement
+	// To test whether database is updated for a given entry or not using prepared
+	// statement
 	@Test
-	public void givenUpdatedSalaryWhenUpdatedUsingPreparedStatementShouldSyncWithDatabase() {
+	public void givenUpdatedSalaryWhenUpdatedUsingPreparedStatementShouldSyncWithDatabase() throws DatabaseException {
 		employeeList = employeePayrollService.readData();
-		employeePayrollService.updateData("Terisa", 2000000.00, EmployeePayrollService.statementType.PREPARED_STATEMENT);
+		employeePayrollService.updateData("Terisa", 2000000.00, statementType.PREPARED_STATEMENT);
 		boolean result = employeePayrollService.check(employeeList, "Terisa", 2000000.00);
 		assertTrue(result);
 	}

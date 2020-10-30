@@ -2,6 +2,7 @@ package com.bridgelabz.employeepayrolljdbc;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
@@ -43,6 +44,13 @@ public class TestEmployeePayrollService {
 		employeePayrollService.updateData("Terisa", 2000000.00, statementType.PREPARED_STATEMENT);
 		boolean result = employeePayrollService.check(employeeList, "Terisa", 2000000.00);
 		assertTrue(result);
+	}
+
+	// To test the data retrieved when start date of employee given
+	@Test
+	public void givenDateRangeWhenRetrievedEmployeeDataShouldMatchEmployeeCount() throws DatabaseException {
+		employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2018, 01, 01), LocalDate.now());
+		assertEquals(3, employeeList.size());
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.bridgelabz.employeepayrolljdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,15 +45,7 @@ public class EmployeePayrollService {
 	// To read payroll Data from database
 	public List<EmployeePayroll> readData() throws DatabaseException {
 		String sqlQuery = "SELECT * FROM employee_payroll";
-		List<EmployeePayroll> employeePayrollList = null;
-		try (Connection connection = DBConnection.getConnection()) {
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(sqlQuery);
-			employeePayrollList = getResultSet(result);
-		} catch (SQLException e) {
-			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
-		}
-		return employeePayrollList;
+		return executeStatementQuery(sqlQuery);
 	}
 
 	// To get employee data by employee name
@@ -140,5 +133,25 @@ public class EmployeePayrollService {
 		} catch (SQLException e) {
 			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
+	}
+
+	// To get employee data joined after a particular date
+	public List<EmployeePayroll> getEmployeeDataByDate(LocalDate startDate, LocalDate endDate)
+			throws DatabaseException {
+		String sqlQuery = String.format("SELECT * FROM employee_payroll WHERE startDate BETWEEN '%s' AND '%s';",
+				Date.valueOf(startDate), Date.valueOf(endDate));
+		return executeStatementQuery(sqlQuery);
+	}
+
+	private List<EmployeePayroll> executeStatementQuery(String sqlQuery) throws DatabaseException {
+		List<EmployeePayroll> employeePayrollList = null;
+		try (Connection connection = DBConnection.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sqlQuery);
+			employeePayrollList = getResultSet(result);
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return employeePayrollList;
 	}
 }

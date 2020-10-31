@@ -190,4 +190,51 @@ public class EmployeePayrollService {
 		}
 		return employeePayrollData;
 	}
+
+	// To add new employee to both employee and payroll tables
+	public EmployeePayroll addEmployeeToEmployeeAndPayroll(String name, double salary, LocalDate startDate, char gender)
+			throws DatabaseException {
+		int employeeId = -1;
+		Connection connection = null;
+		EmployeePayroll employeePayrollData = null;
+		connection = DBConnection.getConnection();
+		try (Statement statement = connection.createStatement()) {
+			String sql = String.format(
+					"INSERT INTO employee_payroll2(name,gender,salary,start) VALUES ('%s','%s','%s','%s')", name,
+					gender, salary, Date.valueOf(startDate));
+			int rowAffected = statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			if (rowAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if (resultSet.next())
+					employeeId = resultSet.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+
+		try (Statement statement = connection.createStatement()) {
+			double deductions = salary * 0.2;
+			double taxablePay = salary - deductions;
+			double tax = taxablePay * 0.1;
+			double netPay = salary - tax;
+			String sql = String.format(
+					"INSERT INTO payroll_details(employee_id,basic_pay,deductions,taxable_pay,tax ,net_pay)VALUES (%s,%s,%s,%s,%s,%s)",
+					employeeId, salary, deductions, taxablePay, tax, netPay);
+			int rowAffected = statement.executeUpdate(sql);
+			if (rowAffected == 1) {
+				employeePayrollData = new EmployeePayroll(employeeId, name, salary, startDate);
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		} finally {
+			if (connection != null) {
+					try {
+						connection.close();
+					} catch (SQLException e) {
+						throw new DatabaseException("Unable to close database!!", exceptionType.DATABASE_CONNECTION);
+					}
+			}
+		}
+		return employeePayrollData;
+	}
 }

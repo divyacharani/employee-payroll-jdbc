@@ -8,11 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.bridgelabz.employeepayrolljdbc.DatabaseException.exceptionType;
 
 public class EmployeePayrollService {
@@ -22,7 +23,6 @@ public class EmployeePayrollService {
 	PreparedStatement preparedStatement;
 
 	private EmployeePayrollService() {
-
 	}
 
 	// To get instance for EmployeePayrollService
@@ -39,7 +39,6 @@ public class EmployeePayrollService {
 	public static void main(String[] args) {
 		// Welcome Message
 		LOG.info("Welcome to Employee Payroll Service");
-
 	}
 
 	// To read payroll Data from database
@@ -68,11 +67,8 @@ public class EmployeePayrollService {
 		List<EmployeePayroll> employeePayrollList = new ArrayList<>();
 		try {
 			while (result.next()) {
-				int id = result.getInt("id");
-				String name = result.getString("name");
-				double salary = result.getDouble("salary");
-				LocalDate startDate = result.getDate("startDate").toLocalDate();
-				employeePayrollList.add(new EmployeePayroll(id, name, salary, startDate));
+				employeePayrollList.add(new EmployeePayroll(result.getInt("id"), result.getString("name"),
+						result.getDouble("salary"), result.getDate("startDate").toLocalDate()));
 			}
 		} catch (SQLException e) {
 			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
@@ -153,5 +149,21 @@ public class EmployeePayrollService {
 			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
 		}
 		return employeePayrollList;
+	}
+
+	// To get sum of salaries of male and female employees
+	public Map<String, Double> getSalarySumByGender() throws DatabaseException {
+		Map<String, Double> salarySumByGender = new HashMap<>();
+		String sqlQuery = "SELECT gender, SUM(salary) AS salary_sum FROM employee_payroll GROUP BY gender;";
+		try (Connection connection = DBConnection.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sqlQuery);
+			while (result.next()) {
+				salarySumByGender.put(result.getString("gender"), result.getDouble("salary_sum"));
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return salarySumByGender;
 	}
 }

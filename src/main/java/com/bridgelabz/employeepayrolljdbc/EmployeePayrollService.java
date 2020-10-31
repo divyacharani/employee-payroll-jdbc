@@ -166,4 +166,28 @@ public class EmployeePayrollService {
 		}
 		return salarySumByGender;
 	}
+
+	// To add new employee to database
+	public EmployeePayroll addEmployeeData(String name, char gender, double salary, LocalDate startDate)
+			throws DatabaseException {
+
+		int employeeId = -1;
+		EmployeePayroll employeePayrollData = null;
+		String sqlQuery = String.format(
+				"INSERT INTO employee_payroll (name,gender,salary,startDate) VALUES('%s','%s','%s','%s')", name, gender,
+				salary, Date.valueOf(startDate));
+		try (Connection connection = DBConnection.getConnection()) {
+			Statement statement = connection.createStatement();
+			int rowAffected = statement.executeUpdate(sqlQuery, statement.RETURN_GENERATED_KEYS);
+			if (rowAffected == 1) {
+				ResultSet result = statement.getGeneratedKeys();
+				if (result.next())
+					employeeId = result.getInt(1);
+			}
+			employeePayrollData = new EmployeePayroll(employeeId, name, gender, salary, startDate);
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return employeePayrollData;
+	}
 }

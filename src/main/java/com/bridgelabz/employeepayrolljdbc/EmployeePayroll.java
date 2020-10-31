@@ -6,6 +6,7 @@ public class EmployeePayroll {
 
 	private int id;
 	private String name;
+	private char gender;
 	private Double salary;
 	private LocalDate startDate;
 
@@ -17,9 +18,22 @@ public class EmployeePayroll {
 		this.startDate = startDate;
 	}
 
+	public EmployeePayroll(int id, String name, char gender, Double salary, LocalDate startDate) {
+		this(id, name, salary, startDate);
+		this.gender = gender;
+	}
+
 	// Getters and Setters
 	public int getId() {
 		return id;
+	}
+
+	public char getGender() {
+		return gender;
+	}
+
+	public void setGender(char gender) {
+		this.gender = gender;
 	}
 
 	public void setId(int id) {

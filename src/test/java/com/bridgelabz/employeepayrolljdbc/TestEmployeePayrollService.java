@@ -87,4 +87,17 @@ public class TestEmployeePayrollService {
 		assertEquals(femaleSalary, salarySumByGender.get("F"));
 	}
 
+	// To test when a new employee is added to database
+	@Test
+	public void givenNewEmployeeWhenAddedShouldSyncWithDatabase() {
+		EmployeePayroll newEmployee = new EmployeePayroll(4, "Charlie", 'M', 4000000.00, LocalDate.now());
+		EmployeePayroll employeeData = null;
+		try {
+			employeeData = employeePayrollService.addEmployeeData("Charlie", 'M', 4000000.00, LocalDate.now());
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(newEmployee.equals(employeeData));
+	}
+
 }

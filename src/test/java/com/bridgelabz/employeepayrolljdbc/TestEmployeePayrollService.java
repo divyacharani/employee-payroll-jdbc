@@ -9,7 +9,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bridgelabz.employeepayrolljdbc.EmployeePayrollService.statementType;
+import com.bridgelabz.employeepayrolljdbc.EmployeePayrollDBService.statementType;
 
 public class TestEmployeePayrollService {
 
@@ -18,7 +18,7 @@ public class TestEmployeePayrollService {
 
 	@Before
 	public void init() {
-		employeePayrollService = EmployeePayrollService.getInstance();
+		employeePayrollService = new EmployeePayrollService();
 	}
 
 	// To test the retrieved entries from database
@@ -37,9 +37,8 @@ public class TestEmployeePayrollService {
 	public void givenUpdatedSalaryWhenUpdatedShouldSyncWithDatabase() {
 		boolean result = false;
 		try {
-			employeeList = employeePayrollService.readData();
-			employeePayrollService.updateData("Terisa", 3000000.00, statementType.STATEMENT);
-			result = employeePayrollService.check(employeeList, "Terisa", 3000000.00);
+			employeePayrollService.updateData("Terisa", 4000000.00, statementType.STATEMENT);
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Terisa");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
@@ -52,9 +51,8 @@ public class TestEmployeePayrollService {
 	public void givenUpdatedSalaryWhenUpdatedUsingPreparedStatementShouldSyncWithDatabase() {
 		boolean result = false;
 		try {
-			employeeList = employeePayrollService.readData();
-			employeePayrollService.updateData("Terisa", 2000000.00, statementType.PREPARED_STATEMENT);
-			result = employeePayrollService.check(employeeList, "Terisa", 2000000.00);
+			employeePayrollService.updateData("Terisa", 2000000.00, statementType.STATEMENT);
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Terisa");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
@@ -65,11 +63,11 @@ public class TestEmployeePayrollService {
 	@Test
 	public void givenDateRangeWhenRetrievedEmployeeDataShouldMatchEmployeeCount() {
 		try {
-			employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2018, 01, 01), LocalDate.now());
+			employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2019, 01, 01), LocalDate.now());
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
-		assertEquals(3, employeeList.size());
+		assertEquals(2, employeeList.size());
 	}
 
 	// To test the retrieved sum of salaries by gender
@@ -88,16 +86,29 @@ public class TestEmployeePayrollService {
 	}
 
 	// To test when a new employee is added to database
+
 	@Test
 	public void givenNewEmployeeWhenAddedShouldSyncWithDatabase() {
-		EmployeePayroll newEmployee = new EmployeePayroll(4, "Charlie", 'M', 4000000.00, LocalDate.now());
-		EmployeePayroll employeeData = null;
+		boolean result = false;
 		try {
-			employeeData = employeePayrollService.addEmployeeData("Charlie", 'M', 4000000.00, LocalDate.now());
+			employeePayrollService.addEmployeeData("Charlie", 'M', 4000000.00, LocalDate.now());
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Charlie");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
-		assertTrue(newEmployee.equals(employeeData));
+		assertTrue(result);
+	}
+
+	@Test
+	public void givenNewEmployeeWhenAddedShouldPopulatePayrollTable() {
+		boolean result = false;
+		try {
+			employeePayrollService.addEmployeeToEmployeeAndPayroll("Rachel", 'F', 3000000.00, LocalDate.now());
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Rachel");
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(result);
 	}
 
 }

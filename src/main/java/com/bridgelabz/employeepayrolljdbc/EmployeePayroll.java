@@ -11,16 +11,24 @@ public class EmployeePayroll {
 	private LocalDate startDate;
 
 	// Constructor
+
+	public EmployeePayroll(int id, String name, char gender, Double salary, LocalDate startDate) {
+		this(name, gender, salary, startDate);
+		this.id = id;
+	}
+
+	public EmployeePayroll(String name, char gender, Double salary, LocalDate startDate) {
+		this.name = name;
+		this.gender = gender;
+		this.salary = salary;
+		this.startDate = startDate;
+	}
+	
 	public EmployeePayroll(int id, String name, Double salary, LocalDate startDate) {
 		this.id = id;
 		this.name = name;
 		this.salary = salary;
 		this.startDate = startDate;
-	}
-
-	public EmployeePayroll(int id, String name, char gender, Double salary, LocalDate startDate) {
-		this(id, name, salary, startDate);
-		this.gender = gender;
 	}
 
 	// Getters and Setters

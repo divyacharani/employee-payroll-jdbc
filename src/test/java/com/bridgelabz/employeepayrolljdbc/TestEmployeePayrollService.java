@@ -124,4 +124,17 @@ public class TestEmployeePayrollService {
 		assertTrue(result);
 	}
 
+	@Test
+	public void givenEmployeeNameWhenDeletedFromPayrollShouldSyncWithDatabase() {
+		boolean result = false;
+		try {
+			employeePayrollService.removeEmployeeFromPayrollTable("Bill");
+			result = employeePayrollService.checkActiveStatus("Bill");
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(result);
+
+	}
+
 }

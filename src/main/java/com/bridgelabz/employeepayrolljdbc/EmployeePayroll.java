@@ -14,6 +14,7 @@ public class EmployeePayroll {
 	private Double salary;
 	private LocalDate startDate;
 	private int[] departmentId;
+	private boolean isActive = true;
 
 	// Constructor
 	public EmployeePayroll(int id, String name, char gender, Double salary, LocalDate startDate) {
@@ -126,6 +127,14 @@ public class EmployeePayroll {
 
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	@Override

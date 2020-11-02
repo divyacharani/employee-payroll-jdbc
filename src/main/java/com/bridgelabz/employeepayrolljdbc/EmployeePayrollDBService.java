@@ -35,7 +35,7 @@ public class EmployeePayrollDBService {
 
 	// To read payroll Data from database
 	public List<EmployeePayroll> readDataDB() throws DatabaseException {
-		String sqlQuery = "SELECT employee_id, name, salary, start_date FROM employee;";
+		String sqlQuery = "SELECT employee_id, name, salary, start_date FROM employee WHERE is_active = true;";
 		return executeStatementQuery(sqlQuery);
 	}
 
@@ -74,7 +74,8 @@ public class EmployeePayrollDBService {
 	}
 
 	private int updateUsingStatement(String name, double salary) throws DatabaseException {
-		String sqlQuery = String.format("UPDATE employee SET salary = %.2f WHERE NAME = '%s';", salary, name);
+		String sqlQuery = String.format("UPDATE employee SET salary = %.2f WHERE NAME = '%s' AND is_active = true;",
+				salary, name);
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
 			return statement.executeUpdate(sqlQuery);
@@ -84,7 +85,7 @@ public class EmployeePayrollDBService {
 	}
 
 	private int updateUsingPreparedStatement(String name, double salary) throws DatabaseException {
-		String sql = "UPDATE employee SET salary = ? WHERE name = ?";
+		String sql = "UPDATE employee SET salary = ? WHERE name = ? AND is_active = true;";
 		try (Connection connection = DBConnection.getConnection()) {
 			PreparedStatement preparedStatementUpdate = connection.prepareStatement(sql);
 			preparedStatementUpdate.setDouble(1, salary);
@@ -113,7 +114,7 @@ public class EmployeePayrollDBService {
 
 	// Prepared statement for employee payroll data
 	private void preparedStatementToGetEmployeeDataByName() throws DatabaseException {
-		String sql = "SELECT employee_id, name, salary, start_date FROM employee WHERE name = ?;";
+		String sql = "SELECT employee_id, name, salary, start_date FROM employee WHERE name = ? AND is_active = true;";
 		try {
 			Connection connection = DBConnection.getConnection();
 			preparedStatementByName = connection.prepareStatement(sql);
@@ -125,7 +126,8 @@ public class EmployeePayrollDBService {
 	// To get employee data joined after a particular date
 	public List<EmployeePayroll> getEmployeeDataByDateDB(LocalDate startDate, LocalDate endDate)
 			throws DatabaseException {
-		String sqlQuery = String.format("SELECT employee_id, name, salary, start_date FROM employee WHERE start_date BETWEEN '%s' AND '%s';",
+		String sqlQuery = String.format(
+				"SELECT employee_id, name, salary, start_date FROM employee WHERE start_date BETWEEN '%s' AND '%s' AND is_active = true;",
 				Date.valueOf(startDate), Date.valueOf(endDate));
 		return executeStatementQuery(sqlQuery);
 	}
@@ -133,7 +135,7 @@ public class EmployeePayrollDBService {
 	// To get sum of salaries of male and female employees
 	public Map<String, Double> getSalarySumByGenderDB() throws DatabaseException {
 		Map<String, Double> salarySumByGender = new HashMap<>();
-		String sqlQuery = "SELECT gender, SUM(salary) AS salary_sum FROM employee GROUP BY gender;";
+		String sqlQuery = "SELECT gender, SUM(salary) AS salary_sum FROM employee WHERE is_active = true GROUP BY gender ;";
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sqlQuery);
@@ -153,12 +155,45 @@ public class EmployeePayrollDBService {
 	}
 
 	// To add new employee to both employee and payroll tables
-	public EmployeePayroll addEmployeeToEmployeeAndPayrollDB(String name, char gender, double salary, LocalDate startDate)
-			throws DatabaseException {
+	public EmployeePayroll addEmployeeToEmployeeAndPayrollDB(String name, char gender, double salary,
+			LocalDate startDate) throws DatabaseException {
 		return new DBServiceAddDetails().addEmployeeToEmployeeAndPayrollDBService(name, gender, salary, startDate);
 	}
 
 	public EmployeePayroll addEmployeeToAllRelatedTablesDB(EmployeePayroll employeePayroll) throws DatabaseException {
 		return new DBServiceAddDetails().addEmployeeToAllRelatedTablesDBService(employeePayroll);
+	}
+
+	// To remove employee from payroll
+	public int removeEmployeeFromPayrollTableDB(String name) throws DatabaseException {
+		int employeeId = getEmployeeDataByNameDB(name).get(0).getEmployeeId();
+		int rowAffected = 0;
+		String sqlQuery = String.format("DELETE FROM payroll WHERE employee_id = '%s';", employeeId);
+		try (Connection connection = DBConnection.getConnection()) {
+			Statement statement = connection.createStatement();
+			rowAffected = statement.executeUpdate(sqlQuery);
+			if (rowAffected == 1) {
+				updateActiveStatusOfEmployee(employeeId);
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+		return rowAffected;
+	}
+
+	private void updateActiveStatusOfEmployee(int employeeId) throws DatabaseException {
+		String sqlQuery = String.format("UPDATE employee SET is_active = false WHERE employee_id = '%s';", employeeId);
+		try (Connection connection = DBConnection.getConnection()) {
+			Statement statement = connection.createStatement();
+			statement.executeUpdate(sqlQuery);
+		} catch (SQLException e) {
+			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
+		}
+	}
+
+	public boolean checkActiveStatusDB(String name) throws DatabaseException {
+		String sqlQuery = String.format("SELECT employee_id, name, salary, start_date FROM employee WHERE name = '%s';", name);
+		boolean status = executeStatementQuery(sqlQuery).get(0).isActive();
+		return status;
 	}
 }

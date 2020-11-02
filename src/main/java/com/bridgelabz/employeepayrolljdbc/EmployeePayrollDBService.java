@@ -35,7 +35,7 @@ public class EmployeePayrollDBService {
 
 	// To read payroll Data from database
 	public List<EmployeePayroll> readDataDB() throws DatabaseException {
-		String sqlQuery = "SELECT * FROM employee_payroll;";
+		String sqlQuery = "SELECT employee_id, name, salary, start_date FROM employee;";
 		return executeStatementQuery(sqlQuery);
 	}
 
@@ -55,8 +55,8 @@ public class EmployeePayrollDBService {
 		List<EmployeePayroll> employeePayrollList = new ArrayList<>();
 		try {
 			while (result.next()) {
-				employeePayrollList.add(new EmployeePayroll(result.getInt("id"), result.getString("name"),
-						result.getDouble("salary"), result.getDate("startDate").toLocalDate()));
+				employeePayrollList.add(new EmployeePayroll(result.getInt("employee_id"), result.getString("name"),
+						result.getDouble("salary"), result.getDate("start_date").toLocalDate()));
 			}
 		} catch (SQLException e) {
 			throw new DatabaseException("Unable to execute query!!", exceptionType.EXECUTE_QUERY);
@@ -74,7 +74,7 @@ public class EmployeePayrollDBService {
 	}
 
 	private int updateUsingStatement(String name, double salary) throws DatabaseException {
-		String sqlQuery = String.format("UPDATE employee_payroll SET salary = %.2f WHERE NAME = '%s';", salary, name);
+		String sqlQuery = String.format("UPDATE employee SET salary = %.2f WHERE NAME = '%s';", salary, name);
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
 			return statement.executeUpdate(sqlQuery);
@@ -84,7 +84,7 @@ public class EmployeePayrollDBService {
 	}
 
 	private int updateUsingPreparedStatement(String name, double salary) throws DatabaseException {
-		String sql = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+		String sql = "UPDATE employee SET salary = ? WHERE name = ?";
 		try (Connection connection = DBConnection.getConnection()) {
 			PreparedStatement preparedStatementUpdate = connection.prepareStatement(sql);
 			preparedStatementUpdate.setDouble(1, salary);
@@ -113,7 +113,7 @@ public class EmployeePayrollDBService {
 
 	// Prepared statement for employee payroll data
 	private void preparedStatementToGetEmployeeDataByName() throws DatabaseException {
-		String sql = "SELECT * FROM employee_payroll WHERE name = ?;";
+		String sql = "SELECT employee_id, name, salary, start_date FROM employee WHERE name = ?;";
 		try {
 			Connection connection = DBConnection.getConnection();
 			preparedStatementByName = connection.prepareStatement(sql);
@@ -125,7 +125,7 @@ public class EmployeePayrollDBService {
 	// To get employee data joined after a particular date
 	public List<EmployeePayroll> getEmployeeDataByDateDB(LocalDate startDate, LocalDate endDate)
 			throws DatabaseException {
-		String sqlQuery = String.format("SELECT * FROM employee_payroll WHERE startDate BETWEEN '%s' AND '%s';",
+		String sqlQuery = String.format("SELECT employee_id, name, salary, start_date FROM employee WHERE start_date BETWEEN '%s' AND '%s';",
 				Date.valueOf(startDate), Date.valueOf(endDate));
 		return executeStatementQuery(sqlQuery);
 	}
@@ -133,7 +133,7 @@ public class EmployeePayrollDBService {
 	// To get sum of salaries of male and female employees
 	public Map<String, Double> getSalarySumByGenderDB() throws DatabaseException {
 		Map<String, Double> salarySumByGender = new HashMap<>();
-		String sqlQuery = "SELECT gender, SUM(salary) AS salary_sum FROM employee_payroll GROUP BY gender;";
+		String sqlQuery = "SELECT gender, SUM(salary) AS salary_sum FROM employee GROUP BY gender;";
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sqlQuery);
@@ -153,7 +153,7 @@ public class EmployeePayrollDBService {
 		int employeeId = -1;
 		EmployeePayroll employeePayrollData = null;
 		String sqlQuery = String.format(
-				"INSERT INTO employee_payroll (name,gender,salary,startDate) VALUES('%s','%s','%s','%s')", name, gender,
+				"INSERT INTO employee (name,gender,salary,start_date) VALUES('%s','%s','%s','%s');", name, gender,
 				salary, Date.valueOf(startDate));
 		try (Connection connection = DBConnection.getConnection()) {
 			Statement statement = connection.createStatement();
@@ -184,7 +184,7 @@ public class EmployeePayrollDBService {
 		}
 		try (Statement statement = connection.createStatement()) {
 			String sql = String.format(
-					"INSERT INTO employee_payroll(name,gender,salary,startDate) VALUES ('%s','%s','%s','%s')", name,
+					"INSERT INTO employee(name,gender,salary,start_date) VALUES ('%s','%s','%s','%s');", name,
 					gender, salary, Date.valueOf(startDate));
 			int rowAffected = statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			if (rowAffected == 1) {
@@ -207,7 +207,7 @@ public class EmployeePayrollDBService {
 			double tax = taxablePay * 0.1;
 			double netPay = salary - tax;
 			String sql = String.format(
-					"INSERT INTO payroll_details(employee_id,basic_pay,deductions,taxable_pay,tax ,net_pay)VALUES (%s,%s,%s,%s,%s,%s)",
+					"INSERT INTO payroll(employee_id,basic_pay,deductions,taxable_pay,income_tax ,net_pay)VALUES (%s,%s,%s,%s,%s,%s);",
 					employeeId, salary, deductions, taxablePay, tax, netPay);
 			int rowAffected = statement.executeUpdate(sql);
 			if (rowAffected == 1) {

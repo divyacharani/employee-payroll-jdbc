@@ -37,7 +37,7 @@ public class TestEmployeePayrollService {
 	public void givenUpdatedSalaryWhenUpdatedShouldSyncWithDatabase() {
 		boolean result = false;
 		try {
-			employeePayrollService.updateData("Terisa", 4000000.00, statementType.STATEMENT);
+			employeePayrollService.updateData("Terisa", 5000000.00, statementType.STATEMENT);
 			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Terisa");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public class TestEmployeePayrollService {
 	public void givenUpdatedSalaryWhenUpdatedUsingPreparedStatementShouldSyncWithDatabase() {
 		boolean result = false;
 		try {
-			employeePayrollService.updateData("Terisa", 2000000.00, statementType.STATEMENT);
+			employeePayrollService.updateData("Terisa", 3000000.00, statementType.STATEMENT);
 			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Terisa");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
@@ -63,7 +63,7 @@ public class TestEmployeePayrollService {
 	@Test
 	public void givenDateRangeWhenRetrievedEmployeeDataShouldMatchEmployeeCount() {
 		try {
-			employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2019, 01, 01), LocalDate.now());
+			employeeList = employeePayrollService.getEmployeeDataByDate(LocalDate.of(2018, 02, 01), LocalDate.now());
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
@@ -81,8 +81,6 @@ public class TestEmployeePayrollService {
 		}
 		Double maleSalary = 4000000.00;
 		assertEquals(maleSalary, salarySumByGender.get("M"));
-		Double femaleSalary = 2000000.00;
-		assertEquals(femaleSalary, salarySumByGender.get("F"));
 	}
 
 	// To test when a new employee is added to database
@@ -91,8 +89,8 @@ public class TestEmployeePayrollService {
 	public void givenNewEmployeeWhenAddedShouldSyncWithDatabase() {
 		boolean result = false;
 		try {
-			employeePayrollService.addEmployeeData("Charlie", 'M', 4000000.00, LocalDate.now());
-			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Charlie");
+			employeePayrollService.addEmployeeData("Mark", 'M', 4000000.00, LocalDate.now());
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Mark");
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}

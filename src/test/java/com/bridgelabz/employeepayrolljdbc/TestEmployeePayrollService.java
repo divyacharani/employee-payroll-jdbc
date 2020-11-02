@@ -84,7 +84,6 @@ public class TestEmployeePayrollService {
 	}
 
 	// To test when a new employee is added to database
-
 	@Test
 	public void givenNewEmployeeWhenAddedShouldSyncWithDatabase() {
 		boolean result = false;
@@ -97,12 +96,28 @@ public class TestEmployeePayrollService {
 		assertTrue(result);
 	}
 
+	// To populate employee and payroll tables simultaneously
 	@Test
 	public void givenNewEmployeeWhenAddedShouldPopulatePayrollTable() {
 		boolean result = false;
 		try {
 			employeePayrollService.addEmployeeToEmployeeAndPayroll("Rachel", 'F', 3000000.00, LocalDate.now());
 			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Rachel");
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(result);
+	}
+
+	// To populate employee and payroll tables simultaneously
+	@Test
+	public void givenNewEmployeeWhenAddedShouldPopulateAllRelatedTables() {
+		boolean result = false;
+		EmployeePayroll employee = new EmployeePayroll("Phoebe", 1, "7098671234", "Telangana", 'F', LocalDate.now(),
+				2500000, new int[] { 51, 52 });
+		try {
+			employeePayrollService.addEmployeeToAllRelatedTables(employee);
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase(employee.getName());
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}

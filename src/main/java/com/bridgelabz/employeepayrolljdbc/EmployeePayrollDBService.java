@@ -157,4 +157,8 @@ public class EmployeePayrollDBService {
 			throws DatabaseException {
 		return new DBServiceAddDetails().addEmployeeToEmployeeAndPayrollDBService(name, gender, salary, startDate);
 	}
+
+	public EmployeePayroll addEmployeeToAllRelatedTablesDB(EmployeePayroll employeePayroll) throws DatabaseException {
+		return new DBServiceAddDetails().addEmployeeToAllRelatedTablesDBService(employeePayroll);
+	}
 }

@@ -78,4 +78,10 @@ public class EmployeePayrollService {
 		if (employee.getId() != -1)
 			employeePayrollList.add(employee);
 	}
+
+	public void addEmployeeToAllRelatedTables(EmployeePayroll employeePayroll) throws DatabaseException {
+		EmployeePayroll employee = employeePayrollDBService.addEmployeeToAllRelatedTablesDB(employeePayroll);
+		if (employee.getId() != -1)
+			employeePayrollList.add(employee);	
+	}
 }

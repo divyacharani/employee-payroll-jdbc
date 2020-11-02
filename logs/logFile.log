@@ -68,3 +68,13 @@ Drivers List :
 com.mysql.cj.jdbc.Driver
 Connecting to.....jdbc:mysql://localhost:3306/payroll_service
 Connection established successfully!!!
+Driver Loaded!!!
+Drivers List : 
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+Connection established successfully!!!
+Driver Loaded!!!
+Drivers List : 
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+Connection established successfully!!!

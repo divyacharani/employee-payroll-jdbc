@@ -35,6 +35,18 @@ public class EmployeePayroll {
 		this.startDate = startDate;
 	}
 
+	public EmployeePayroll(String name, int companyId, String phoneNumber, String address, char gender,
+			LocalDate startDate, double salary, int[] departmentId) {
+		this.name = name;
+		this.companyId = companyId;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
+		this.gender = gender;
+		this.salary = salary;
+		this.startDate = startDate;
+		this.departmentId = departmentId;
+	}
+
 	// Getters and Setters
 	public int getEmployeeId() {
 		return employeeId;

@@ -31,16 +31,23 @@ public class TestEmployeePayrollServiceWithThreads {
 		employeeList.add(new EmployeePayroll("Chandler", 'M', 4500000.00, LocalDate.now()));
 		Instant start = null;
 		Instant end = null;
+		Instant startThread = null;
+		Instant endThread = null;
 		try {
 			start = Instant.now();
 			employeePayrollService.addEmployeeListToTable(employeeList);
 			end = Instant.now();
+			startThread = Instant.now();
+			employeePayrollService.addEmployeeListToTableWithThreads(employeeList);
+			endThread = Instant.now();
 			employeeList = employeePayrollService.readData();
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
 		EmployeePayrollService.LOG.info("Duration without Threads : " + Duration.between(start, end));
-		assertEquals(5, employeeList.size());
+		EmployeePayrollService.LOG.info("Duration with Threads : " + Duration.between(startThread, endThread));
+		
+		assertEquals(10, employeeList.size());
 	}
 
 }

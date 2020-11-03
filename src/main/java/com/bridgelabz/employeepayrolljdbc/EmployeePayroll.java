@@ -2,6 +2,7 @@ package com.bridgelabz.employeepayrolljdbc;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class EmployeePayroll {
 
@@ -171,6 +172,11 @@ public class EmployeePayroll {
 		} else if (!startDate.equals(other.startDate))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, gender, salary, startDate);
 	}
 
 }

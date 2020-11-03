@@ -23,9 +23,45 @@ Drivers List :
 com.mysql.cj.jdbc.Driver
 Connecting to.....jdbc:mysql://localhost:3306/payroll_service
 Connection established successfully!!!
+Employee being added : Rachel
+Employee being added : Mark
+Driver Loaded!!!
+Drivers List : 
+Employee being added : Terisa
+Driver Loaded!!!
+Drivers List : 
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+Employee being added : Charlie
+Driver Loaded!!!
+Drivers List : 
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+Employee being added : Chandler
+Driver Loaded!!!
+Drivers List : 
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+Driver Loaded!!!
+Drivers List : 
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+com.mysql.cj.jdbc.Driver
+Connecting to.....jdbc:mysql://localhost:3306/payroll_service
+Connection established successfully!!!
+Connection established successfully!!!
+Employee added : Terisa
+Connection established successfully!!!
+Connection established successfully!!!
+Connection established successfully!!!
+Employee added : Charlie
+Employee added : Mark
+Employee added : Chandler
+Employee added : Rachel
 Driver Loaded!!!
 Drivers List : 
 com.mysql.cj.jdbc.Driver
 Connecting to.....jdbc:mysql://localhost:3306/payroll_service
 Connection established successfully!!!
-Duration without Threads : PT3.3178548S
+Duration without Threads : PT1.6422844S
+Duration with Threads : PT0.6053944S

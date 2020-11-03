@@ -2,6 +2,7 @@ package com.bridgelabz.employeepayrolljdbc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import com.bridgelabz.employeepayrolljdbc.EmployeePayrollDBService.statementType
 
 public class EmployeePayrollService {
 
-	public static final Logger LOG = LogManager.getLogger(EmployeePayrollService.class);
+	public static Logger LOG = LogManager.getLogger(EmployeePayrollService.class);
 	private static EmployeePayrollDBService employeePayrollDBService;
 	List<EmployeePayroll> employeePayrollList = new ArrayList<>();
 
@@ -103,5 +104,34 @@ public class EmployeePayrollService {
 		for (EmployeePayroll employee : employeeList) {
 			addEmployeeData(employee.getName(), employee.getGender(), employee.getSalary(), employee.getStartDate());
 		}
+	}
+
+	public void addEmployeeListToTableWithThreads(List<EmployeePayroll> employeeList) {
+		Map<Integer, Boolean> employeeAditionStatus = new HashMap<>();
+		employeeList.forEach(employee -> {
+			Runnable task = () -> {
+				employeeAditionStatus.put(employee.hashCode(), false);
+				LOG.info("Employee being added : " + employee.getName());
+				try {
+					addEmployeeData(employee.getName(), employee.getGender(), employee.getSalary(),
+							employee.getStartDate());
+				} catch (DatabaseException e) {
+					e.printStackTrace();
+				}
+				employeeAditionStatus.put(employee.hashCode(), true);
+				LOG.info("Employee added : " + employee.getName());
+			};
+			Thread thread = new Thread(task, employee.getName());
+			thread.start();
+		});
+
+		while (employeeAditionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 }

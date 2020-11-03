@@ -16,30 +16,30 @@ Processing Thread: main ConnectionId : 5 Connection established successfully!!!
 Employee being added : Rachel
 Employee being added : Mark
 Driver Loaded!!!
-Processing Thread: Mark Connecting to database with connectionId: 7
-Driver Loaded!!!
-Processing Thread: Rachel Connecting to database with connectionId: 7
+Processing Thread: Rachel Connecting to database with connectionId: 6
 Employee being added : Terisa
-Driver Loaded!!!
-Processing Thread: Rachel ConnectionId : 8 Connection established successfully!!!
-Processing Thread: Terisa Connecting to database with connectionId: 8
 Employee being added : Charlie
-Driver Loaded!!!
-Processing Thread: Charlie Connecting to database with connectionId: 9
 Employee being added : Chandler
+Processing Thread: Rachel ConnectionId : 6 Connection established successfully!!!
 Driver Loaded!!!
-Processing Thread: Chandler Connecting to database with connectionId: 10
+Processing Thread: Chandler Connecting to database with connectionId: 7
 Employee added : Rachel
-Processing Thread: Mark ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Chandler ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Terisa ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Charlie ConnectionId : 10 Connection established successfully!!!
-Employee added : Mark
+Processing Thread: Chandler ConnectionId : 7 Connection established successfully!!!
+Driver Loaded!!!
+Processing Thread: Charlie Connecting to database with connectionId: 8
 Employee added : Chandler
+Processing Thread: Charlie ConnectionId : 8 Connection established successfully!!!
+Driver Loaded!!!
+Processing Thread: Terisa Connecting to database with connectionId: 9
 Employee added : Charlie
+Processing Thread: Terisa ConnectionId : 9 Connection established successfully!!!
+Driver Loaded!!!
+Processing Thread: Mark Connecting to database with connectionId: 10
 Employee added : Terisa
+Processing Thread: Mark ConnectionId : 10 Connection established successfully!!!
+Employee added : Mark
 Driver Loaded!!!
 Processing Thread: main Connecting to database with connectionId: 11
 Processing Thread: main ConnectionId : 11 Connection established successfully!!!
-Duration without Threads : PT1.8904693S
-Duration with Threads : PT0.6333997S
+Duration without Threads : PT1.9132186S
+Duration with Threads : PT0.6584652S

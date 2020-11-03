@@ -9,9 +9,11 @@ import java.util.Enumeration;
 import com.bridgelabz.employeepayrolljdbc.DatabaseException.exceptionType;
 
 public class DBConnection {
+	private static int connectionCounter = 0;
 
 	// To load drivers and establish connection
 	public static Connection getConnection() throws DatabaseException {
+		connectionCounter++;
 		Connection connection = null;
 		String jdbcDriver = "com.mysql.jdbc.Driver";
 		String dataBaseURL = "jdbc:mysql://localhost:3306/payroll_service";
@@ -24,18 +26,18 @@ public class DBConnection {
 			throw new DatabaseException("Unable to load the driver!!", exceptionType.DRIVER_CONNECTION);
 		}
 
-		// Get list of drivers
-		listDrivers();
-
-		EmployeePayrollService.LOG.info("Connecting to....." + dataBaseURL);
+		EmployeePayrollService.LOG.info("Processing Thread: " + Thread.currentThread().getName()
+				+ " Connecting to database with connectionId: " + connectionCounter);
 
 		// Establish Connection
 		try {
 			connection = DriverManager.getConnection(dataBaseURL, "root", "Charani@19");
-			EmployeePayrollService.LOG.info("Connection established successfully!!!");
 		} catch (SQLException e) {
 			throw new DatabaseException("Unable to connect to database!!", exceptionType.DATABASE_CONNECTION);
 		}
+
+		EmployeePayrollService.LOG.info("Processing Thread: " + Thread.currentThread().getName() + " ConnectionId : "
+				+ connectionCounter + " Connection established successfully!!!");
 		return connection;
 	}
 

@@ -196,4 +196,5 @@ public class EmployeePayrollDBService {
 		boolean status = executeStatementQuery(sqlQuery).get(0).isActive();
 		return status;
 	}
+
 }

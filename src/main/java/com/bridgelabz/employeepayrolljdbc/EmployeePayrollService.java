@@ -98,4 +98,10 @@ public class EmployeePayrollService {
 	public boolean checkActiveStatus(String name) throws DatabaseException {
 		return employeePayrollDBService.checkActiveStatusDB(name);
 	}
+
+	public void addEmployeeListToTable(List<EmployeePayroll> employeeList) throws DatabaseException {
+		for (EmployeePayroll employee : employeeList) {
+			addEmployeeData(employee.getName(), employee.getGender(), employee.getSalary(), employee.getStartDate());
+		}
+	}
 }

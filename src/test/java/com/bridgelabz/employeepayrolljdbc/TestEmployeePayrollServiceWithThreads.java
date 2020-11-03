@@ -35,10 +35,10 @@ public class TestEmployeePayrollServiceWithThreads {
 		Instant endThread = null;
 		try {
 			start = Instant.now();
-			employeePayrollService.addEmployeeListToTable(employeeList);
+			employeePayrollService.addEmployeeListToEmployeeAndPayrollTable(employeeList);
 			end = Instant.now();
 			startThread = Instant.now();
-			employeePayrollService.addEmployeeListToTableWithThreads(employeeList);
+			employeePayrollService.addEmployeeListToEmployeeAndPayrollWithThreads(employeeList);
 			endThread = Instant.now();
 			employeeList = employeePayrollService.readData();
 		} catch (DatabaseException e) {

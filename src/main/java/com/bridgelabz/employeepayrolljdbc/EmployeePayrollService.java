@@ -100,20 +100,21 @@ public class EmployeePayrollService {
 		return employeePayrollDBService.checkActiveStatusDB(name);
 	}
 
-	public void addEmployeeListToTable(List<EmployeePayroll> employeeList) throws DatabaseException {
+	public void addEmployeeListToEmployeeAndPayrollTable(List<EmployeePayroll> employeeList) throws DatabaseException {
 		for (EmployeePayroll employee : employeeList) {
-			addEmployeeData(employee.getName(), employee.getGender(), employee.getSalary(), employee.getStartDate());
+		addEmployeeToEmployeeAndPayroll(employee.getName(), employee.getGender(), employee.getSalary(), employee.getStartDate());
 		}
+		
 	}
-
-	public void addEmployeeListToTableWithThreads(List<EmployeePayroll> employeeList) {
+	
+	public void addEmployeeListToEmployeeAndPayrollWithThreads(List<EmployeePayroll> employeeList) {
 		Map<Integer, Boolean> employeeAditionStatus = new HashMap<>();
 		employeeList.forEach(employee -> {
 			Runnable task = () -> {
 				employeeAditionStatus.put(employee.hashCode(), false);
 				LOG.info("Employee being added : " + employee.getName());
 				try {
-					addEmployeeData(employee.getName(), employee.getGender(), employee.getSalary(),
+					addEmployeeToEmployeeAndPayroll(employee.getName(), employee.getGender(), employee.getSalary(),
 							employee.getStartDate());
 				} catch (DatabaseException e) {
 					e.printStackTrace();
@@ -133,5 +134,6 @@ public class EmployeePayrollService {
 			}
 		}
 
+		
 	}
 }

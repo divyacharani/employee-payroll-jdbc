@@ -6,7 +6,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,5 +51,25 @@ public class TestEmployeePayrollServiceWithThreads {
 		
 		assertEquals(10, employeeList.size());
 	}
-
+	
+	@Test
+	public void givenListOfUpdatedSalaryWhenUpdatedShouldSyncWithDatabase() {
+		Map<String,Double> nameToUpdatedSalary = new HashMap<>();
+		nameToUpdatedSalary.put("Rachel", 3500000.00);
+		nameToUpdatedSalary.put("Mark", 2500000.00);
+		nameToUpdatedSalary.put("Charlie", 3000000.00);
+		boolean result = false;
+		Instant startThread = null;
+		Instant endThread = null;
+		try {
+			startThread = Instant.now();
+			employeePayrollService.updateSalaryList(nameToUpdatedSalary);
+			endThread = Instant.now();
+			result = employeePayrollService.checkEmployeeDataInSyncWithDatabase("Mark");
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+		EmployeePayrollService.LOG.info("Duration with Threads : " + Duration.between(startThread, endThread));
+		assertTrue(result);
+	}
 }

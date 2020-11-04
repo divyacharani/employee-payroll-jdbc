@@ -12,7 +12,7 @@ public class DBConnection {
 	private static int connectionCounter = 0;
 
 	// To load drivers and establish connection
-	public static synchronized Connection getConnection() throws DatabaseException {
+	public static Connection getConnection() throws DatabaseException {
 		connectionCounter++;
 		Connection connection = null;
 		String jdbcDriver = "com.mysql.jdbc.Driver";

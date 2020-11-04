@@ -136,4 +136,30 @@ public class EmployeePayrollService {
 
 		
 	}
+
+	public void updateSalaryList(Map<String, Double> nameToUpdatedSalary) {
+		Map<Integer, Boolean> salaryUpdateStatus = new HashMap<>();
+		nameToUpdatedSalary.forEach((employeeName, salary) -> {
+			Runnable task = () -> {
+				salaryUpdateStatus.put(employeeName.hashCode(), false);
+				try {
+					updateData(employeeName, salary, statementType.STATEMENT);
+				} catch (DatabaseException e) {
+					e.printStackTrace();
+				}
+				salaryUpdateStatus.put(employeeName.hashCode(), true);
+			};
+			Thread thread = new Thread(task, employeeName);
+			thread.start();
+		});
+
+		while (salaryUpdateStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 }

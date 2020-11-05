@@ -8,10 +8,10 @@ public class EmployeePayroll {
 
 	private int employeeId;
 	private String name;
-	private int companyId;
+	private Integer companyId;
 	private String phoneNumber;
 	private String address;
-	private char gender;
+	private Character gender;
 	private Double salary;
 	private LocalDate startDate;
 	private int[] departmentId;
@@ -140,9 +140,8 @@ public class EmployeePayroll {
 
 	@Override
 	public String toString() {
-		return "EmployeePayroll [employeeId=" + employeeId + ", name=" + name + ", companyId=" + companyId
-				+ ", phoneNumber=" + phoneNumber + ", address=" + address + ", gender=" + gender + ", salary=" + salary
-				+ ", startDate=" + startDate + ", departmentId=" + Arrays.toString(departmentId) + "]";
+		return "employeeId=" + employeeId + ", name=" + name + ", salary=" + salary + ", startDate="
+				+ startDate;
 	}
 
 	@Override

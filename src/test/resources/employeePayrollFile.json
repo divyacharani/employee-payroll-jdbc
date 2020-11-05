@@ -1,0 +1,59 @@
+{
+  "employees": [
+    {
+      "employeeId": 1,
+      "name": "Chandler",
+      "salary": 2500000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 3
+      },
+      "isActive": true
+    },
+    {
+      "employeeId": 2,
+      "name": "Bill",
+      "salary": 3000000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 3
+      },
+      "isActive": true
+    },
+    {
+      "employeeId": 3,
+      "name": "Terisa",
+      "salary": 1000000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 4
+      },
+      "isActive": true
+    },
+    {
+      "employeeId": 4,
+      "name": "Charlie",
+      "salary": 2000000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 4
+      },
+      "isActive": true
+    },
+    {
+      "employeeId": 5,
+      "name": "Mark",
+      "salary": 4000000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 5
+      },
+      "isActive": true
+    }
+  ]
+}

@@ -14,12 +14,15 @@ public class EmployeePayrollService {
 
 	public static Logger LOG = LogManager.getLogger(EmployeePayrollService.class);
 	private static EmployeePayrollDBService employeePayrollDBService;
-	List<EmployeePayroll> employeePayrollList = new ArrayList<>();
+	List<EmployeePayroll> employeePayrollList;
 
 	public EmployeePayrollService() {
 		employeePayrollDBService = employeePayrollDBService.getInstance();
 	}
 
+	public EmployeePayrollService(List<EmployeePayroll> employeePayrollList) {
+		this.employeePayrollList = new ArrayList<>(employeePayrollList);
+	}
 	public static void main(String[] args) {
 		// Welcome Message
 		LOG.info("Welcome to Employee Payroll Service");
@@ -161,5 +164,14 @@ public class EmployeePayrollService {
 			}
 		}
 
+	}
+
+	public void addEmployeePayroll(EmployeePayroll employeePayroll) {
+		employeePayrollList.add(employeePayroll);
+		
+	}
+
+	public long countEntries() {
+		return employeePayrollList.size();
 	}
 }

@@ -1,70 +1,47 @@
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 1
-Processing Thread: main ConnectionId : 1 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 2
-Processing Thread: main ConnectionId : 2 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 3
-Processing Thread: main ConnectionId : 3 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 4
-Processing Thread: main ConnectionId : 4 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 5
-Processing Thread: main ConnectionId : 5 Connection established successfully!!!
-Employee being added : Terisa
-Employee being added : Mark
-Employee being added : Rachel
-Driver Loaded!!!
-Driver Loaded!!!
-Processing Thread: Terisa Connecting to database with connectionId: 8
-Processing Thread: Mark Connecting to database with connectionId: 8
-Employee being added : Charlie
-Driver Loaded!!!
-Processing Thread: Rachel Connecting to database with connectionId: 8
-Driver Loaded!!!
-Processing Thread: Charlie Connecting to database with connectionId: 9
-Employee being added : Chandler
-Driver Loaded!!!
-Processing Thread: Chandler Connecting to database with connectionId: 10
-Processing Thread: Charlie ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Mark ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Rachel ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Terisa ConnectionId : 10 Connection established successfully!!!
-Processing Thread: Chandler ConnectionId : 10 Connection established successfully!!!
-Employee added : Terisa
-Employee added : Chandler
-Employee added : Rachel
-Employee added : Mark
-Employee added : Charlie
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 11
-Processing Thread: main ConnectionId : 11 Connection established successfully!!!
-Duration without Threads : PT2.4765627S
-Duration with Threads : PT0.5397925S
-Driver Loaded!!!
-Driver Loaded!!!
-Processing Thread: Charlie Connecting to database with connectionId: 14
-Processing Thread: Mark Connecting to database with connectionId: 14
-Driver Loaded!!!
-Processing Thread: Rachel Connecting to database with connectionId: 14
-Processing Thread: Charlie ConnectionId : 14 Connection established successfully!!!
-Processing Thread: Mark ConnectionId : 14 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: Charlie Connecting to database with connectionId: 15
-Driver Loaded!!!
-Processing Thread: Mark Connecting to database with connectionId: 16
-Processing Thread: Rachel ConnectionId : 16 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: Rachel Connecting to database with connectionId: 17
-Processing Thread: Charlie ConnectionId : 17 Connection established successfully!!!
-Processing Thread: Rachel ConnectionId : 17 Connection established successfully!!!
-Processing Thread: Mark ConnectionId : 17 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 18
-Processing Thread: main ConnectionId : 18 Connection established successfully!!!
-Driver Loaded!!!
-Processing Thread: main Connecting to database with connectionId: 19
-Processing Thread: main ConnectionId : 19 Connection established successfully!!!
-Duration with Threads : PT0.5338234S
+Employee payroll entries in JSON Server :
+[
+  {
+    "employeeId": 1,
+    "name": "Chandler",
+    "salary": 2500000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 3
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 2,
+    "name": "Bill",
+    "salary": 3000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 3
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 3,
+    "name": "Terisa",
+    "salary": 1000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 4
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 4,
+    "name": "Charlie",
+    "salary": 2000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 4
+    },
+    "isActive": true
+  }
+]

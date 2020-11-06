@@ -3,7 +3,7 @@
     {
       "employeeId": 1,
       "name": "Chandler",
-      "salary": 2500000,
+      "salary": 5000000,
       "startDate": {
         "year": 2020,
         "month": 11,
@@ -51,7 +51,7 @@
       "startDate": {
         "year": 2020,
         "month": 11,
-        "day": 5
+        "day": 6
       },
       "isActive": true
     },
@@ -62,7 +62,7 @@
       "startDate": {
         "year": 2020,
         "month": 11,
-        "day": 5
+        "day": 6
       },
       "isActive": true
     },
@@ -73,7 +73,7 @@
       "startDate": {
         "year": 2020,
         "month": 11,
-        "day": 5
+        "day": 6
       },
       "isActive": true
     },
@@ -84,7 +84,7 @@
       "startDate": {
         "year": 2020,
         "month": 11,
-        "day": 5
+        "day": 6
       },
       "isActive": true
     }

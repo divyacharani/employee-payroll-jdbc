@@ -23,6 +23,7 @@ public class EmployeePayrollService {
 	public EmployeePayrollService(List<EmployeePayroll> employeePayrollList) {
 		this.employeePayrollList = new ArrayList<>(employeePayrollList);
 	}
+
 	public static void main(String[] args) {
 		// Welcome Message
 		LOG.info("Welcome to Employee Payroll Service");
@@ -105,11 +106,12 @@ public class EmployeePayrollService {
 
 	public void addEmployeeListToEmployeeAndPayrollTable(List<EmployeePayroll> employeeList) throws DatabaseException {
 		for (EmployeePayroll employee : employeeList) {
-		addEmployeeToEmployeeAndPayroll(employee.getName(), employee.getGender(), employee.getSalary(), employee.getStartDate());
+			addEmployeeToEmployeeAndPayroll(employee.getName(), employee.getGender(), employee.getSalary(),
+					employee.getStartDate());
 		}
-		
+
 	}
-	
+
 	public void addEmployeeListToEmployeeAndPayrollWithThreads(List<EmployeePayroll> employeeList) {
 		Map<Integer, Boolean> employeeAditionStatus = new HashMap<>();
 		employeeList.forEach(employee -> {
@@ -137,7 +139,6 @@ public class EmployeePayrollService {
 			}
 		}
 
-		
 	}
 
 	public void updateSalaryList(Map<String, Double> nameToUpdatedSalary) {
@@ -168,10 +169,23 @@ public class EmployeePayrollService {
 
 	public void addEmployeePayroll(EmployeePayroll employeePayroll) {
 		employeePayrollList.add(employeePayroll);
-		
+
 	}
 
 	public long countEntries() {
 		return employeePayrollList.size();
+	}
+
+	public void updateEmployeeList(String name, double salary) {
+
+		(getEmployeeByName(employeePayrollList, name)).setSalary(salary);
+	}
+	
+	public EmployeePayroll getEmployee(String name)
+	{
+		EmployeePayroll employee = employeePayrollList.stream()
+				.filter(employeeObj -> ((employeeObj.getName()).equals(name))).findFirst().orElse(null);
+		return employee;
+		
 	}
 }

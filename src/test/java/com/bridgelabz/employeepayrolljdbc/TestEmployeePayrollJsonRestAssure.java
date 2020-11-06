@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 
+import com.bridgelabz.employeepayrolljdbc.EmployeePayrollDBService.statementType;
 import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
@@ -76,6 +77,22 @@ public class TestEmployeePayrollJsonRestAssure {
 		}
 		long entries = employeePayrollService.countEntries();
 		assertEquals(8, entries);
+	}
+	
+	@Test
+	public void UC3givenUpdatedSalaryWhenUpdatedShouldMatchResponseCode() {
+		EmployeePayrollService employeePayrollService;
+		EmployeePayroll[] arrayOfEmployees = getEmployeeList();
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
+		employeePayrollService.updateEmployeeList("Chandler", 5000000.00);
+		EmployeePayroll employee = employeePayrollService.getEmployee("Chandler");
+		String empJson = new Gson().toJson(employee);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(empJson);
+		Response response = request.put("/employees/" + employee.getEmployeeId());
+		int statusCode = response.getStatusCode();
+		assertEquals(200, statusCode);
 	}
 
 }

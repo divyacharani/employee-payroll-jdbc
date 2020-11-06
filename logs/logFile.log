@@ -43,5 +43,16 @@ Employee payroll entries in JSON Server :
       "day": 4
     },
     "isActive": true
+  },
+  {
+    "employeeId": 5,
+    "name": "Mark",
+    "salary": 4000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 5
+    },
+    "isActive": true
   }
 ]

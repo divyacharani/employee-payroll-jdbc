@@ -54,6 +54,39 @@
         "day": 5
       },
       "isActive": true
+    },
+    {
+      "employeeId": 6,
+      "name": "Rachel",
+      "salary": 1500000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 5
+      },
+      "isActive": true
+    },
+    {
+      "employeeId": 7,
+      "name": "Monica",
+      "salary": 2000000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 5
+      },
+      "isActive": true
+    },
+    {
+      "employeeId": 8,
+      "name": "Joey",
+      "salary": 3500000,
+      "startDate": {
+        "year": 2020,
+        "month": 11,
+        "day": 5
+      },
+      "isActive": true
     }
   ]
 }

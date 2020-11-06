@@ -3,7 +3,7 @@ Employee payroll entries in JSON Server :
   {
     "employeeId": 1,
     "name": "Chandler",
-    "salary": 2000000,
+    "salary": 5000000,
     "startDate": {
       "year": 2020,
       "month": 11,
@@ -50,7 +50,7 @@ Employee payroll entries in JSON Server :
   {
     "employeeId": 1,
     "name": "Chandler",
-    "salary": 2000000,
+    "salary": 5000000,
     "startDate": {
       "year": 2020,
       "month": 11,
@@ -108,7 +108,98 @@ Employee payroll entries in JSON Server :
   {
     "employeeId": 1,
     "name": "Chandler",
+    "salary": 5000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 3
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 2,
+    "name": "Bill",
+    "salary": 3000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 3
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 3,
+    "name": "Terisa",
+    "salary": 1000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 4
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 4,
+    "name": "Charlie",
     "salary": 2000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 4
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 5,
+    "name": "Mark",
+    "salary": 4000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 6
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 6,
+    "name": "Rachel",
+    "salary": 1500000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 6
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 7,
+    "name": "Monica",
+    "salary": 2000000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 6
+    },
+    "isActive": true
+  },
+  {
+    "employeeId": 8,
+    "name": "Joey",
+    "salary": 3500000,
+    "startDate": {
+      "year": 2020,
+      "month": 11,
+      "day": 6
+    },
+    "isActive": true
+  }
+]
+Employee payroll entries in JSON Server :
+[
+  {
+    "employeeId": 1,
+    "name": "Chandler",
+    "salary": 5000000,
     "startDate": {
       "year": 2020,
       "month": 11,

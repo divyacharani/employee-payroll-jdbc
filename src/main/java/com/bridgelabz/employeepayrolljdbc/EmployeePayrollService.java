@@ -180,12 +180,16 @@ public class EmployeePayrollService {
 
 		(getEmployeeByName(employeePayrollList, name)).setSalary(salary);
 	}
-	
-	public EmployeePayroll getEmployee(String name)
-	{
+
+	public EmployeePayroll getEmployee(String name) {
 		EmployeePayroll employee = employeePayrollList.stream()
 				.filter(employeeObj -> ((employeeObj.getName()).equals(name))).findFirst().orElse(null);
 		return employee;
-		
+
+	}
+
+	public void removeEmployee(String name) {
+		EmployeePayroll employee = getEmployeeByName(employeePayrollList, name);
+		employeePayrollList.remove(employee);
 	}
 }

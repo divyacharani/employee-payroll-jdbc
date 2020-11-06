@@ -12,17 +12,6 @@
       "isActive": true
     },
     {
-      "employeeId": 2,
-      "name": "Bill",
-      "salary": 3000000,
-      "startDate": {
-        "year": 2020,
-        "month": 11,
-        "day": 3
-      },
-      "isActive": true
-    },
-    {
       "employeeId": 3,
       "name": "Terisa",
       "salary": 1000000,

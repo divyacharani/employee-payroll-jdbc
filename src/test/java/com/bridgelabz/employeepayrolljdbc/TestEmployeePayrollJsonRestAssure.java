@@ -76,7 +76,7 @@ public class TestEmployeePayrollJsonRestAssure {
 		long entries = employeePayrollService.countEntries();
 		assertEquals(8, entries);
 	}
-	
+
 	@Test
 	public void UC3givenUpdatedSalaryWhenUpdatedShouldMatchResponseCode() {
 		EmployeePayrollService employeePayrollService;
@@ -92,7 +92,7 @@ public class TestEmployeePayrollJsonRestAssure {
 		int statusCode = response.getStatusCode();
 		assertEquals(200, statusCode);
 	}
-	
+
 	@Test
 	public void UC4givenEmployeeDataWhenRetrievedShouldMatchNoofEntries() {
 		EmployeePayrollService employeePayrollService;
@@ -100,6 +100,22 @@ public class TestEmployeePayrollJsonRestAssure {
 		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
 		long entries = employeePayrollService.countEntries();
 		assertEquals(8, entries);
+	}
+
+	@Test
+	public void UC5givenEmployeeWhenDeletedShouldMatchResponseCode() {
+		EmployeePayrollService employeePayrollService;
+		EmployeePayroll[] arrayOfEmployees = getEmployeeList();
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
+		EmployeePayroll employee = employeePayrollService.getEmployee("Bill");
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		Response response = request.delete("/employees/" + employee.getEmployeeId());
+		int statusCode = response.getStatusCode();
+		assertEquals(200, statusCode);
+		employeePayrollService.removeEmployee("Bill");
+		long entries = employeePayrollService.countEntries();
+		assertEquals(7, entries);
 	}
 
 }

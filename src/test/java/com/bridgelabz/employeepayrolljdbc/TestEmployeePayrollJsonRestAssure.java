@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
-
-import com.bridgelabz.employeepayrolljdbc.EmployeePayrollDBService.statementType;
 import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
@@ -93,6 +91,15 @@ public class TestEmployeePayrollJsonRestAssure {
 		Response response = request.put("/employees/" + employee.getEmployeeId());
 		int statusCode = response.getStatusCode();
 		assertEquals(200, statusCode);
+	}
+	
+	@Test
+	public void UC4givenEmployeeDataWhenRetrievedShouldMatchNoofEntries() {
+		EmployeePayrollService employeePayrollService;
+		EmployeePayroll[] arrayOfEmployees = getEmployeeList();
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
+		long entries = employeePayrollService.countEntries();
+		assertEquals(8, entries);
 	}
 
 }

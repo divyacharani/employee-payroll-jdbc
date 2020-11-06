@@ -1,7 +1,6 @@
 package com.bridgelabz.employeepayrolljdbc;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class EmployeePayroll {
